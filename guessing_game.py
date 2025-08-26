@@ -1,45 +1,100 @@
-import random
-print("Welcome to the Guessing Game!")
-print("I'm thinking of a number between two numbers you will provide.")
-count = 1
+import random 
 
-while True:
-    lower = input("Enter the lower number: ")
-    try:
-        lower = int(lower)
-        if lower < 1:
-            print("The lower number must be greater than 0.")
-            continue
-        break 
-    except ValueError:
-        print("Please enter a valid whole number.")
- 
+def get_lower():
+    while True:
+        try:
+            lower = int(input("Enter the lower bound: "))
+            if lower > 0:
+                return lower
+            else:
+                print("Lower bound must be a positive integer.")
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+        
+        
+def get_upper(lower):  
+    while True:
+        try:
+            upper = int(input("Enter the upper bound: "))
+            if upper > lower:
+                return upper
+            else:
+                print("Upper bound must be greater than lower bound.")
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
 
-while True:
-    upper = input("Enter the upper number: ")
-    try:
-        upper = int(upper)
-        if upper <= lower:
-            print(f"The upper number must be greater than the lower number ({lower}).")
-            continue
-        break
-    except ValueError:
-        print("Please enter a valid whole number greater than the lower limit.")
+def player_turn(secret, c_lower, c_upper, count):
+    while True:
+        try:
+            guess = int(input("Guess a number: "))
+            count += 1
+            break
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+    if guess == secret:
+        print(f"Congratulations you win! You've guessed the number in {count} attempts.")
+        input("Press Enter to exit the game.")
+        return True, c_lower, c_upper, count
 
-secret = random.randrange(lower, upper + 1)
+    elif guess < secret:
+        print("Too low! Try again.")
+        if guess >= c_lower:
+            c_lower = guess + 1
+    elif guess > secret:
+        print("Too high! Try again.")
+        if guess <= c_upper:
+            c_upper = guess - 1
+    return False, c_lower, c_upper, count
 
-print(f"I have selected a number between {lower} and {upper}. Can you guess it?")
+def computer_turn(secret, c_lower, c_upper, c_count):
+    guess = random.randint(c_lower, c_upper)
+    c_count += 1
+    if guess == secret:
+        print(f"Computer guessed {guess}")
+        print(f"Computer wins! In {c_count} attempts.")
+        input("Press Enter to exit the game.")
+        return True, c_lower, c_upper, c_count
+    elif guess < secret:
+        print(f"Computer guessed {guess}")
+        print("Too low!")
+        if guess >= c_lower:
+            c_lower = guess + 1
+    elif guess > secret:
+        print(f"Computer guessed {guess}")
+        print("Too high!")
+        if guess <= c_upper:
+            c_upper = guess - 1
+    return False, c_lower, c_upper, c_count
 
-while True:
-    player_guess = int(input("Enter your quess: "))
+        
 
-    if player_guess == secret: 
-        print (f"You won in {count} guesses!")
-        input("Press Key to exit")
-        break
-    else:
-        count += 1
-        if int(player_guess) < secret:
-            print("Your quess is too low!")
-        else:
-            print("Your quess is too high!")
+def game():
+    print("Welcome to the Guessing Game!")
+    print("You will be playing against me.")
+    print("First, you decide the range for the game.")
+
+    count = 0
+    c_count = 0
+    
+    p_won = False
+    c_won = False
+    
+    lower = get_lower()
+    upper = get_upper(lower)
+
+    secret = random.randint(lower, upper)
+    c_lower = lower
+    c_upper = upper
+
+    print("Great! Now let's start the game.")
+    print(f"try and guess a number between", lower, "and", upper)
+
+    while True:
+        p_won, c_lower, c_upper, count = player_turn(secret, c_lower, c_upper, count)
+        if p_won ==  True:
+            break
+        c_won, c_lower, c_upper, c_count = computer_turn(secret, c_lower, c_upper, c_count)
+        if c_won == True:
+            break
+
+game()
