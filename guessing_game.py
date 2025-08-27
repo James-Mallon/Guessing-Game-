@@ -1,5 +1,5 @@
 import random
-import time 
+import time
 
 
 def get_lower():
@@ -13,6 +13,7 @@ def get_lower():
         except ValueError:
             print("Invalid input. Please enter a valid number.")
 
+
 def get_upper(lower):
     while True:
         try:
@@ -24,6 +25,7 @@ def get_upper(lower):
         except ValueError:
             print("Invalid input. Please enter a valid number.")
 
+
 def get_life_count():
     while True:
         try:
@@ -34,6 +36,7 @@ def get_life_count():
                 print("Lives must be a positive integer.")
         except ValueError:
             print("Invalid input. Please enter a valid number.")
+
 
 def player_turn(secret, c_lower, c_upper, count):
     while True:
@@ -61,6 +64,7 @@ def player_turn(secret, c_lower, c_upper, count):
             c_upper = guess - 1
     return False, c_lower, c_upper, count
 
+
 def computer_turn(secret, c_lower, c_upper, c_count):
     guess = random.randint(c_lower, c_upper)
     c_count += 1
@@ -70,7 +74,7 @@ def computer_turn(secret, c_lower, c_upper, c_count):
         print(f"Computer wins! In {c_count} attempts.")
         input("Press Enter to exit the game.")
         return True, c_lower, c_upper, c_count
-        
+
     elif guess < secret:
         time.sleep(1)
         print(f"Computer guessed {guess}")
@@ -87,6 +91,7 @@ def computer_turn(secret, c_lower, c_upper, c_count):
             c_upper = guess - 1
     return False, c_lower, c_upper, c_count
 
+
 def single_player_creative():
     print("Welcome to the Guessing Game!")
     print("You have selected creative mode, you have unlimited lives.")
@@ -96,7 +101,7 @@ def single_player_creative():
 
     p_won = False
 
-    #unused but required for funtions
+    # unused but required for funtions
     c_lower = 0
     c_upper = 0
 
@@ -113,6 +118,7 @@ def single_player_creative():
             secret, c_lower, c_upper, count)
         if p_won == True:
             break
+
 
 def single_player_comp():
     print("Welcome to the Guessing Game!")
@@ -127,7 +133,6 @@ def single_player_comp():
 
     lower = get_lower()
     upper = get_upper(lower)
-   
 
     secret = random.randint(lower, upper)
     c_lower = lower
@@ -135,7 +140,6 @@ def single_player_comp():
 
     print("Great! Now let's start the game.")
     print(f"try and guess a number between", lower, "and", upper)
-
 
     while True:
         p_won, c_lower, c_upper, count = player_turn(
@@ -147,30 +151,68 @@ def single_player_comp():
         if c_won == True:
             break
 
+
 def single_player_survival():
     print("Welcome to the Guessing Game!")
-    print("You have selected survival mode, you have limited lives.")
-    print("First, you decide the range for the game.")
+    print("You have selected survival mode, you have limited lives and a range of 1 - 100.")
+    print("You can choose between 3 difficulties or a custom mode:")
+    print("1. Easy - 10 lives")
+    print("2. Medium - 7 lives")
+    print("3. Hard - 5 lives")
+    print("4. Custom - Choose your own lives and range")
+
+    while True:
+        mode = input("PLease Select '1, 2, 3 or 4' ").strip().lower()
+
+        if mode == "1":
+            print("You have selected easy mode, you will have 10 lives.")
+            lives = 10
+            lower = 1
+            upper = 100
+            break
+        elif mode == "2":
+            print("You have selected medium mode, you will have 7 lives.")
+            lives = 7
+            lower = 1
+            upper = 100
+            break
+        elif mode == "3":
+            print("You have selected hard mode, you will have 5 lives.")
+            lives = 5
+            lower = 1
+            upper = 100
+            break
+        elif mode == "4":
+            print(
+                "You have selected custom mode, you will be able to choose your own lives and range.")
+            print("First, choose the range for the game.")
+            lower = get_lower()
+            upper = get_upper(lower)
+            print("Now choose how many lives you want.")
+            lives = get_life_count()
+            break
+        else:
+            print("Please enter a valid option")
+            continue
 
     count = 0
 
     p_won = False
 
-    #unused but required for funtions
+    # unused but required for funtions
     c_lower = 0
     c_upper = 0
 
-    lower = get_lower()
-    upper = get_upper(lower)
+    # lower = get_lower()
+    # upper = get_upper(lower)
 
-    print("Now choose how many lives you want.")
-
-    lives = get_life_count()
+    # lives = get_life_count()
 
     secret = random.randint(lower, upper)
 
     print("Great! Now let's start the game.")
-    print(f"You have {lives} lives to try and guess a number between", lower, "and", upper)
+    print(
+        f"You have {lives} lives to try and guess a number between", lower, "and", upper)
     print("Good luck!")
 
     while lives > 0:
@@ -181,9 +223,11 @@ def single_player_survival():
         lives -= 1
         print(f"You have {lives} lives remaining.")
         if lives == 0:
-            print(f"Sorry, you've run out of lives. The secret number was {secret}.")
+            print(
+                f"Sorry, you've run out of lives. The secret number was {secret}.")
             input("Press Enter to exit the game.")
             break
+
 
 def co_op_comp():
     print("Welcome to the Guessing Game!")
@@ -218,14 +262,15 @@ def co_op_comp():
             secret, c_lower, c_upper, c_count)
         if p2_won == True:
             break
-    
+
+
 def choose_mode():
     print("Choose a game mode:")
-    print("single player - Casual (unlimited lives)")
+    print("1. single player - Casual (unlimited lives)")
     print("2. Single Player - Survival (limitied lives)")
     print("3. Single Player - Competitive (You vs Computer)")
     print("4. Co-Op - Competitive (Player 1 vs Player 2)")
-    print("5. quit - Exit the game")     
+    print("5. quit - Exit the game")
     while True:
         try:
             mode = int(input("Enter Game Mode, '1, 2, 3, 4, 5': "))
@@ -249,6 +294,7 @@ def choose_mode():
         except ValueError:
             print("Please enter a valid intiger")
 
+
 def game():
     playing = True
     while playing:
@@ -258,7 +304,8 @@ def game():
             print("press Enter to exit")
             break
         while True:
-            play_again = input("Do you want to play again? (yes/no): ").strip().lower()
+            play_again = input(
+                "Do you want to play again? (yes/no): ").strip().lower()
             if play_again == "yes":
                 break
             elif play_again == "no":
@@ -269,6 +316,6 @@ def game():
             else:
                 print("Invalid input. Please enter 'yes' or 'no'.")
                 continue
-                
-      
+
+
 game()
